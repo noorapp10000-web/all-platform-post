@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ApiPublicHooksPublishScheduledRouteImport } from './routes/api/public/hooks/publish-scheduled'
 import { Route as ApiPublicOauthPlatformRouteImport } from './routes/api/public/oauth/$platform'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicHooksPublishScheduledRoute =
@@ -32,36 +38,47 @@ const ApiPublicOauthPlatformRoute = ApiPublicOauthPlatformRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/api/public/hooks/publish-scheduled': typeof ApiPublicHooksPublishScheduledRoute
   '/api/public/oauth/$platform': typeof ApiPublicOauthPlatformRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/api/public/hooks/publish-scheduled': typeof ApiPublicHooksPublishScheduledRoute
   '/api/public/oauth/$platform': typeof ApiPublicOauthPlatformRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/api/public/hooks/publish-scheduled': typeof ApiPublicHooksPublishScheduledRoute
   '/api/public/oauth/$platform': typeof ApiPublicOauthPlatformRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/api/public/hooks/publish-scheduled' | '/api/public/oauth/$platform'
+    | '/'
+    | '/auth'
+    | '/api/public/hooks/publish-scheduled'
+    | '/api/public/oauth/$platform'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/api/public/hooks/publish-scheduled' | '/api/public/oauth/$platform'
+    | '/'
+    | '/auth'
+    | '/api/public/hooks/publish-scheduled'
+    | '/api/public/oauth/$platform'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/api/public/hooks/publish-scheduled'
     | '/api/public/oauth/$platform'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   ApiPublicHooksPublishScheduledRoute: typeof ApiPublicHooksPublishScheduledRoute
   ApiPublicOauthPlatformRoute: typeof ApiPublicOauthPlatformRoute
 }
@@ -73,6 +90,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/publish-scheduled': {
@@ -94,6 +118,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   ApiPublicHooksPublishScheduledRoute: ApiPublicHooksPublishScheduledRoute,
   ApiPublicOauthPlatformRoute: ApiPublicOauthPlatformRoute,
 }
