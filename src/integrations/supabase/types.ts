@@ -14,7 +14,162 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      platform_accounts: {
+        Row: {
+          account_external_id: string
+          account_name: string
+          avatar_url: string | null
+          created_at: string
+          credentials_ciphertext: string
+          id: string
+          needs_reconnect: boolean
+          platform: Database["public"]["Enums"]["platform"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_external_id: string
+          account_name: string
+          avatar_url?: string | null
+          created_at?: string
+          credentials_ciphertext: string
+          id?: string
+          needs_reconnect?: boolean
+          platform: Database["public"]["Enums"]["platform"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_external_id?: string
+          account_name?: string
+          avatar_url?: string | null
+          created_at?: string
+          credentials_ciphertext?: string
+          id?: string
+          needs_reconnect?: boolean
+          platform?: Database["public"]["Enums"]["platform"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_targets: {
+        Row: {
+          account_id: string | null
+          caption: string
+          created_at: string
+          error_message: string | null
+          id: string
+          platform: Database["public"]["Enums"]["platform"]
+          post_id: string
+          published_at: string | null
+          remote_url: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          caption?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          platform: Database["public"]["Enums"]["platform"]
+          post_id: string
+          published_at?: string | null
+          remote_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string | null
+          caption?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          platform?: Database["public"]["Enums"]["platform"]
+          post_id?: string
+          published_at?: string | null
+          remote_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_targets_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "platform_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_targets_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          scheduled_at: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+          video_path: string
+          video_size: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          scheduled_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+          video_path: string
+          video_size?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          scheduled_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          video_path?: string
+          video_size?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +178,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      platform: "youtube" | "tiktok" | "facebook" | "instagram"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +305,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      platform: ["youtube", "tiktok", "facebook", "instagram"],
+    },
   },
 } as const
